@@ -12,15 +12,9 @@ class DataLoader:
         self,
         engine,
         enable_others_category: bool = False,
-        network_name=["N-MH", "N-MA"],
-        city_name="Mannheim",
-        year=2023,
     ):
         self.engine = engine
         self.enable_others_category = enable_others_category
-        self.network_name = network_name
-        self.city_name = city_name
-        self.year = year
         self.entity_categories = {
             "food_beverage": ["restaurant", "fastfood", "cafe", "bakery", "bar"],
             "transportation": ["tram_stop", "station"],
@@ -50,7 +44,6 @@ class DataLoader:
         """
         Loads all POIs with their important features
         POIs are stored in public.osm, location information in geo_information
-        Only POIs in {self.city_name} ({self.network_name}) are considered
         """
         query = f"""
         SELECT 
@@ -62,21 +55,14 @@ class DataLoader:
             ST_X(g.location::geometry) as longitude,
             ST_Y(g.location::geometry) as latitude,
             o.opening_hours,
-            g.city_name as city,
-            g.postal_code,
-            g.federal_state_name as state,
-            g.country_name as country
         FROM public.osm o
         JOIN public.geo_information g ON o.location_id = g.location_id
         WHERE g.location IS NOT NULL
-        AND g.city_name = '{self.city_name}'
         """
 
         with self.engine.connect() as conn:
             pois_df = pd.read_sql(text(query), conn)
-        self.logger.info(
-            f"Loaded POIs in {self.city_name} ({self.network_name}): {len(pois_df)}"
-        )
+        self.logger.info(f"Loaded POIs: {len(pois_df)}")
         pois_df = pois_df.dropna(subset=["poi_name"])
         pois_df = pois_df.drop_duplicates(
             subset=["poi_name", "entity_name"], keep="first"
@@ -113,15 +99,12 @@ class DataLoader:
                     landuse,
                     ST_AsText(area) as wkt_geom
                 FROM public.osm_landuse
-                WHERE city = '{self.city_name}'
         """
         with self.engine.connect() as conn:
             landuse_df = pd.read_sql(text(sql), conn)
         landuse_df["geometry"] = gpd.GeoSeries.from_wkt(landuse_df["wkt_geom"])
         landuse_gdf = gpd.GeoDataFrame(landuse_df, geometry="geometry")
-        self.logger.info(
-            f"Loaded OSM Landuse data for {self.city_name}: {len(landuse_gdf)} records"
-        )
+        self.logger.info(f"Loaded OSM Landuse data: {len(landuse_gdf)} records")
         return landuse_gdf
 
     def _haversine_distance(self, lat1, lon1, lat2, lon2):

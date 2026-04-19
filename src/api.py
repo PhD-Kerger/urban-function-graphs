@@ -48,7 +48,6 @@ class API:
                     "odlocation_id": str(idx + 1),
                     "odlocation_name": name,
                     "location_id": str(idx + 1),
-                    "network_name": "API_Network",
                     "latitude": lat,
                     "longitude": lon,
                 }

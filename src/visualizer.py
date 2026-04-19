@@ -911,14 +911,12 @@ class Visualizer:
             other_node = v if u == node else u
             if self.G.nodes[other_node].get("type") == "odlocation":
                 station_name = self.G.nodes[other_node].get("name", "Unknown")
-                station_network = self.G.nodes[other_node].get("network", "Unknown")
                 distance = edge_data.get("distance", 0)
                 weight = edge_data.get("initial_x_decay_x_tfidf_weight", 0)
 
                 station_data.append(
                     {
                         "name": station_name,
-                        "network": station_network,
                         "distance": distance,
                         "weight": weight,
                     }
@@ -936,7 +934,6 @@ class Visualizer:
                     <thead style="background-color: #4682b4; color: white; position: sticky; top: 0;">
                         <tr>
                             <th style="padding: 4px; text-align: left; border: 1px solid #ddd; max-width: 150px;">Station Name</th>
-                            <th style="padding: 4px; text-align: left; border: 1px solid #ddd; max-width: 100px;">Network</th>
                             <th style="padding: 4px; text-align: right; border: 1px solid #ddd; width: 70px;">Dist (m)</th>
                             <th style="padding: 4px; text-align: right; border: 1px solid #ddd; width: 60px;">Weight</th>
                         </tr>
@@ -949,7 +946,6 @@ class Visualizer:
             table_html += f"""
                     <tr style="background-color: {row_color};">
                         <td style="padding: 3px; border: 1px solid #ddd; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{station['name']}">{station['name']}</td>
-                        <td style="padding: 3px; border: 1px solid #ddd; max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{station['network']}</td>
                         <td style="padding: 3px; text-align: right; border: 1px solid #ddd; width: 70px;">{station['distance']:.0f}</td>
                         <td style="padding: 3px; text-align: right; border: 1px solid #ddd; width: 60px;">{station['weight']:.4f}</td>
                     </tr>

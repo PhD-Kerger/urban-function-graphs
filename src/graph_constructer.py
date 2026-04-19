@@ -57,7 +57,6 @@ class GraphConstructer:
                     node_id,
                     type="odlocation",
                     name=odlocation["odlocation_name"],
-                    network=odlocation["network_name"],
                     lat=odlocation["latitude"],
                     lon=odlocation["longitude"],
                     location_id=odlocation["location_id"],

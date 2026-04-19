@@ -35,18 +35,19 @@ class SpatialContextEmbedder:
             dbport=str(db_config["port"]),
             dbname=db_config["dbname"],
         )
-        
+
         self.config_name = self.config.get("name", "default")
 
         # Setup data loader
         location_config = self.config["processing"]["location"]
         osm_config = self.config["processing"]["osm"]
-        
+
         self.enable_private_score = self.config["processing"].get(
             "enable_private_score", False
         )
-        self.private_cap_threshold = self.config["processing"].get("private_cap_threshold", 0.7)
-
+        self.private_cap_threshold = self.config["processing"].get(
+            "private_cap_threshold", 0.7
+        )
 
         # coordinates are first CLI argument
         self.coordinates = sys.argv[1] if len(sys.argv) > 1 else None
@@ -57,9 +58,6 @@ class SpatialContextEmbedder:
         self.data_loader = DataLoader(
             engine=self.db_engine.engine,
             enable_others_category=osm_config.get("enable_others_category", False),
-            network_name=location_config["network_names"],
-            city_name=location_config["city_name"],
-            year=location_config["year"]
         )
 
     def run(self):
@@ -112,7 +110,9 @@ class SpatialContextEmbedder:
         self.graph_constructer.construct_graph()
 
         results = api.process_coordinates(self.graph_constructer.get_graph())
-        self.visualizer = Visualizer(self.graph_constructer.get_graph(), self.config_name)
+        self.visualizer = Visualizer(
+            self.graph_constructer.get_graph(), self.config_name
+        )
         self.visualizer.plot_graph_map()
         return results
 

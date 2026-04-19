@@ -107,13 +107,6 @@ processing:
   enable_private_score: false # Enable land-use based private trip scoring
   private_cap_threshold: 0.7 # Max private score weight (0-1)
 
-  location:
-    city_name: "Mannheim"
-    network_names: # List of micromobility networks
-      - N-MH
-      - N-MA
-    year: 2023
-
   osm:
     enable_others_category: false # Include 'others' POI category
 
