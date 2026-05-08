@@ -1,6 +1,6 @@
-# Inferring Micromobility Trip Context from Urban Points of Interest via a Temporal Knowledge Graph
+# Inferring Functional Urban Structure from Points of Interest and Mobility Data: A Spatio-Temporal Graph-Based Framework
 
-We propose a temporal knowledge graph that directly connects micromobility locations with nearby POIs using routing-based walking distances, semantic rarity weighting (inverse document frequency), and opening-hour information. The method incrementally refines spatial relations through distance decay, category balancing, and temporal activation, resulting in interpretable, time-dependent, station-level context representations without relying on predefined spatial tessellations.
+We propose a temporal knowledge graph that directly connects spatial locations with nearby POIs using routing-based walking distances, semantic rarity weighting (inverse document frequency), and opening-hour information. The method incrementally refines spatial relations through distance decay, category balancing, and temporal activation, resulting in interpretable, time-dependent, station-level context representations without relying on predefined spatial tessellations.
 
 ## Overview
 
@@ -17,8 +17,8 @@ Unlike traditional grid-based or hexagonal tessellation approaches, this framewo
 
 ## Key Features
 
-- **Data-source agnostic**: Works with any micromobility network providing O/D locations
-- **Explainable by design**: Direct station-POI relationships without spatial aggregation
+- **Data-source agnostic**: Works with any spatial location set
+- **Explainable by design**: Direct location-POI relationships without spatial aggregation
 - **Temporal modeling**: Incorporates opening hours and daily activity patterns
 - **Distance-aware**: Uses OSRM routing for realistic walking distances with exponential decay
 - **Semantic balancing**: IDF weighting prevents dominance of frequent POI categories
@@ -45,7 +45,7 @@ See [requirements.txt](requirements.txt) for full list.
 ### 1. Clone the Repository
 
 ```bash
-git clone git@github.com:PhD-Kerger/tkg-odlocations.git
+git clone git@github.com:PhD-Kerger/urban-function-graphs.git
 cd tkg-odlocations
 ```
 
@@ -67,7 +67,7 @@ To setup OSRM for walking routes follow the guide in our [Main Repository](https
 
 Ensure your PostgreSQL database contains:
 
-- Micromobility O/D locations (id, name, lat, lon)
+- Locations (id, name, lat, lon)
 - OSM POIs (osm_id, lat, lon, name, opening_hours, type)
 - Optional: Land-use polygons
 
@@ -76,7 +76,7 @@ Ensure your PostgreSQL database contains:
 First, build the Docker image:
 
 ```bash
-docker build . -t tkg-odlocations
+docker build . -t urban-function-graphs
 ```
 
 Then, start the services using Docker Compose:
@@ -104,7 +104,7 @@ database:
 
 ```yaml
 processing:
-  enable_private_score: false # Enable land-use based private trip scoring
+  enable_private_score: false # Enable land-use based private scoring
   private_cap_threshold: 0.7 # Max private score weight (0-1)
 
   osm:
@@ -121,12 +121,12 @@ processing:
 Process a single coordinate and get JSON embeddings:
 
 ```bash
-docker exec tkg /app/run.sh 49.477,8.464,University
+docker exec urban-function-graphs /app/run.sh 49.477,8.464,University
 ```
 
 Output: An interactive Folium map saved to the workspace showing:
 
-- Micromobility stations (colored by dominant category)
+- Spatial Locations
 - Connected POIs
 - Edge weights
 - Temporal embeddings for each hour/weekday
@@ -172,5 +172,5 @@ Output: An interactive Folium map saved to the workspace showing:
 To process multiple coordinates, provide them separated by +:
 
 ```bash
-docker exec tkg /app/run.sh 49.477,8.464,University+49.480,8.470,Park
+docker exec urban-function-graphs /app/run.sh 49.477,8.464,University+49.480,8.470,Park
 ```
