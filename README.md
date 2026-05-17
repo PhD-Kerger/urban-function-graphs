@@ -1,10 +1,10 @@
-# Inferring Functional Urban Structure from Points of Interest and Mobility Data: A Spatio-Temporal Graph-Based Framework
+# Inferring Urban Functional Structure from POIs and Mobility Data Using Spatio-Temporal Interaction Graphs
 
-We propose a temporal knowledge graph that directly connects spatial locations with nearby POIs using routing-based walking distances, semantic rarity weighting (inverse document frequency), and opening-hour information. The method incrementally refines spatial relations through distance decay, category balancing, and temporal activation, resulting in interpretable, time-dependent, station-level context representations without relying on predefined spatial tessellations.
+We propose a spatio-temporal graph that directly connects spatial locations with nearby POIs using routing-based walking distances, semantic rarity weighting (inverse document frequency), and opening-hour information. The method incrementally refines spatial relations through distance decay, category balancing, and temporal activation, resulting in interpretable, time-dependent, station-level context representations without relying on predefined spatial tessellations.
 
 ## Overview
 
-This project implements a novel approach to understanding micromobility usage patterns by creating a temporal knowledge graph that directly links micromobility stations with nearby POIs while explicitly modeling:
+This project implements a novel approach to understanding micromobility usage patterns by creating a temporal graph that directly links micromobility stations with nearby POIs while explicitly modeling:
 
 - **Spatial distance** using routing-based walking distances
 - **Semantic rarity** through inverse document frequency (IDF) weighting
